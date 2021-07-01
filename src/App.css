@@ -1,3 +1,18 @@
 .tab-selected {
 	border-bottom: 2px solid white;
 }
+
+.input-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.passcode-input {
+	border-bottom: 3px solid #128c7e;
+}
+
+.passcode-item {
+	border: none !important;
+}
