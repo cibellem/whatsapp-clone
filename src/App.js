@@ -6,16 +6,14 @@ import {
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonTabs,
 } from '@ionic/react';
+// import { withAuthenticator, AmplifySignOut } from 'aws-amplify/ui-​react'
 import { IonReactRouter } from '@ionic/react-router';
-import { cameraOutline, ellipse, square, triangle } from 'ionicons/icons';
+import { cameraOutline } from 'ionicons/icons';
 import Tab1 from './pages/Tab1.js';
 import Tab2 from './pages/Tab2.js';
-import Tab3 from './pages/Tab3';
+import Tab3 from './pages/Tab3.js';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -36,6 +34,9 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+//Custom Css
+import "./App.css"
+
 const App = () => (
   <IonApp>
     <IonReactRouter>
@@ -54,18 +55,20 @@ const App = () => (
             <Redirect to="/tab1" />
           </Route>
         </IonRouterOutlet>
-        <IonTabBar slot="top">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={cameraOutline}>Chats</IonIcon>
+
+
+        <IonTabBar color="primary" slot="top">
+          <IonTabButton tab="photo" >
+            <IonIcon icon={cameraOutline}>CHATS</IonIcon>
           </IonTabButton>
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonLabel>Chats</IonLabel>
+          <IonTabButton tab="Chats" href="/tab1">
+            <IonLabel>CHATS</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonLabel>Status</IonLabel>
+          <IonTabButton tab="Status" href="/tab2">
+            <IonLabel>STATUS</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonLabel>Calls</IonLabel>
+          <IonTabButton tab="Calls" href="/tab3">
+            <IonLabel>CALLS</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
