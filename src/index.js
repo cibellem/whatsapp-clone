@@ -1,14 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App.js";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import reportWebVitals from "./reportWebVitals";
+import { AppContextProvider } from "./State.js";
+
+const RootComponentWithProvider = () => {
+	return (
+		<AppContextProvider>
+			<App />
+		</AppContextProvider>
+	);
+};
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+	<React.StrictMode>
+		<RootComponentWithProvider />
+	</React.StrictMode>,
+	document.getElementById("root"),
 );
 
 // If you want your app to work offline and load faster, you can change
