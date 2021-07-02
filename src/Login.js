@@ -27,7 +27,7 @@ const Login = () => {
     const login = async () => {
 
         //Show loading component
-        setShowLoading(true)
+        
 
         //connect to firebase
         let user;
