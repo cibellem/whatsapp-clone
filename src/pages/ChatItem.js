@@ -1,20 +1,70 @@
-import React, { useContext, useEffect } from "react";
-import { IonAvatar, IonLabel, IonItem } from "@ionic/react";
+import React, { useContext, useRef, useEffect, useState } from "react";
+import { IonAvatar, IonLabel, useIonViewDidEnter, IonItem } from "@ionic/react";
 import { AppContext } from "../State.js";
 
+import db from "../Firestore";
 import { useHistory } from "react-router-dom";
 
 const ChatItem = ({ contacts }) => {
   const history = useHistory();
   const { state, dispatch } = useContext(AppContext);
+  const [lastMessage = {}, setLastMessage] = useState();
+  const [newMessageCount = 0, setNewMessageCount] = useState();
+  const [previousLastMessage = {}, setPreviousLastMessage] = useState();
+
+
+  useEffect(() => {
+    if (lastMessage.message_id !== previousLastMessage.message_id) {
+      setNewMessageCount(newMessageCount + 1)
+    }
+  }, [lastMessage])
+
+  let messageSubscription = useRef(null);
+
+
+
+  useIonViewDidEnter(async () => {
+
+
+    //Messages between two participants
+    let channel1 = `${state.user.user_id},${state.chattingWith.user_id}`;
+    let channel2 = `${state.chattingWith.user_id},${state.user.user_id}`;
+
+    //Query from db the messages, store in a variable and set component state
+    messageSubscription = await db.collection("messages").where("channel", "in", [channel1, channel2])
+      .orderBy("time", "desc")
+      .limit(1)
+      .onSnapshot(function (querySnapshot) {
+        var messages = [];
+        querySnapshot.forEach(function (doc) {
+
+          console.log(doc)
+          messages.push(doc.data());
+        });
+        if (messages.length > 0) {
+          setLastMessage(messages[0]);
+
+        }
+
+
+        console.log(messages);
+      });
+  });
 
   const openChat = () => {
     dispatch({
       type: "setNoTabs",
       payload: true,
     });
+
+    dispatch({
+      type: "setChattingWith",
+      payload: contacts
+    });
+
     history.push("/chatpage");
   };
+
 
   return (
     <IonItem onClick={openChat} key={contacts.user_id}>
@@ -23,7 +73,7 @@ const ChatItem = ({ contacts }) => {
       </IonAvatar>
       <IonLabel>
         <h3>{contacts.name}</h3>
-        <p>Hello, did you get to talk with them about..</p>
+        <p>{lastMessage.message || "...."}</p>
       </IonLabel>
     </IonItem>
   );

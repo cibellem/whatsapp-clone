@@ -9,7 +9,6 @@ const initialState = {
   appName: "WhatsApp",
   // state to holds users data from a logged session when app loads
   user: JSON.parse(localStorage.getItem("whatsapp-clone-user")),
-  messages: JSON.parse(localStorage.getItem("whatsapp-clone-messages")),
   noTabs: false,
   chattingWith: {},
 };
@@ -33,18 +32,6 @@ let reducer = (state, action) => {
         user: user,
       };
     }
-
-    //this reducer sets the value of the user in the localstorage
-    // case "loadMessages": {
-    //   const messages = action.payload;
-    //   localStorage.setItem("whatsapp-clone-user", JSON.stringify(messages));
-
-    //   return {
-    //     ...state,
-    //     messages: messages,
-    //   };
-    // }
-
     case "setNoTabs": {
       return {
         ...state,
