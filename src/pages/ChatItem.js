@@ -1,5 +1,11 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
-import { IonAvatar, IonLabel, useIonViewDidEnter, IonItem } from "@ionic/react";
+import {
+  IonAvatar,
+  IonLabel,
+  useIonViewDidEnter,
+  IonItem,
+  IonBadge,
+} from "@ionic/react";
 import { AppContext } from "../State.js";
 
 import db from "../Firestore";
@@ -8,9 +14,9 @@ import { useHistory } from "react-router-dom";
 const ChatItem = ({ contacts }) => {
   const history = useHistory();
   const { state, dispatch } = useContext(AppContext);
-  const [lastMessage = {}, setLastMessage] = useState();
-  const [newMessageCount = 0, setNewMessageCount] = useState();
-  const [previousLastMessage = {}, setPreviousLastMessage] = useState();
+  const [lastMessage, setLastMessage] = useState({});
+  const [newMessageCount, setNewMessageCount] = useState(0);
+  const [previousLastMessage, setPreviousLastMessage] = useState({});
 
   useEffect(() => {
     if (lastMessage.message_id !== previousLastMessage.message_id) {
@@ -24,7 +30,7 @@ const ChatItem = ({ contacts }) => {
     //Messages between current user and other uses
     let channel1 = `${state.user.user_id},${contacts.user_id}`;
     let channel2 = `${contacts.user_id},${state.user.user_id}`;
-    console.log(channel1);
+
     //Query from db the messages, store in a variable and set component state
     messageSubscription = await db
       .collection("messages")
@@ -36,7 +42,9 @@ const ChatItem = ({ contacts }) => {
         querySnapshot.forEach(function (doc) {
           messages.push(doc.data());
         });
+
         if (messages.length > 0) {
+          setPreviousLastMessage(lastMessage);
           setLastMessage(messages[0]);
         }
       });
@@ -65,6 +73,12 @@ const ChatItem = ({ contacts }) => {
         <h3>{contacts.name}</h3>
         <p>{lastMessage.message || "...."}</p>
       </IonLabel>
+
+      {newMessageCount > 0 && (
+        <IonBadge color="tertiary" slot="end">
+          {newMessageCount}
+        </IonBadge>
+      )}
     </IonItem>
   );
 };

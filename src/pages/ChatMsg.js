@@ -1,26 +1,6 @@
-import React, { useContext, useRef, useState } from "react";
-import {
-  IonPage,
-  IonHeader,
-  IonTitle,
-  IonContent,
-  IonToolbar,
-  IonAvatar,
-  IonInput,
-  IonFooter,
-  IonRow,
-  IonGrid,
-  IonButton,
-  IonCol,
-  IonIcon,
-  useIonViewWillLeave,
-  IonTabButton,
-  useIonViewDidEnter,
-} from "@ionic/react";
+import React, { useContext } from "react";
 
-import db from "../Firestore";
 import { AppContext } from "../State.js";
-import { sendSharp, happyOutline, attachOutline } from "ionicons/icons";
 
 import "./Tab1.css";
 

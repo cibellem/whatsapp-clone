@@ -72,6 +72,7 @@ const ChatPage = ({ user_id }) => {
   };
 
   const sendMsg = async (type = "text", file = null) => {
+    console.log(type);
     if (message || type === "media") {
       let messageBody = {
         message_id: Utility.genRandom(), //Creates a ramdom msg id that will be store in the db
@@ -100,7 +101,7 @@ const ChatPage = ({ user_id }) => {
           </IonAvatar>
           <IonTitle>{state.chattingWith.name}</IonTitle>
         </IonToolbar>
-        {/* <IonIcon icon={ellipsisVerticalOutline}></IonIcon> */}
+
         <ion-icon name="ellipsis-vertical-outline"></ion-icon>
       </IonHeader>
 
@@ -141,7 +142,10 @@ const ChatPage = ({ user_id }) => {
                 </IonGrid>
               </IonCol>
               <IonCol size="2">
-                <IonButton onClick={sendMsg} className="send-msg-button">
+                <IonButton
+                  onClick={() => sendMsg()}
+                  className="send-msg-button"
+                >
                   <IonIcon size="large" icon={sendSharp}></IonIcon>
                 </IonButton>
               </IonCol>
