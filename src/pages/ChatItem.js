@@ -12,42 +12,33 @@ const ChatItem = ({ contacts }) => {
   const [newMessageCount = 0, setNewMessageCount] = useState();
   const [previousLastMessage = {}, setPreviousLastMessage] = useState();
 
-
   useEffect(() => {
     if (lastMessage.message_id !== previousLastMessage.message_id) {
-      setNewMessageCount(newMessageCount + 1)
+      setNewMessageCount(newMessageCount + 1);
     }
-  }, [lastMessage])
+  }, [lastMessage]);
 
   let messageSubscription = useRef(null);
 
-
-
   useIonViewDidEnter(async () => {
-
-
     //Messages between two participants
-    let channel1 = `${state.user.user_id},${state.chattingWith.user_id}`;
-    let channel2 = `${state.chattingWith.user_id},${state.user.user_id}`;
+    let channel1 = `${state.user.user_id},${contacts.user_id}`;
+    let channel2 = `${contacts.user_id},${state.user.user_id}`;
 
     //Query from db the messages, store in a variable and set component state
-    messageSubscription = await db.collection("messages").where("channel", "in", [channel1, channel2])
+    messageSubscription = await db
+      .collection("messages")
+      .where("channel", "in", [channel1, channel2])
       .orderBy("time", "desc")
       .limit(1)
       .onSnapshot(function (querySnapshot) {
         var messages = [];
         querySnapshot.forEach(function (doc) {
-
-          console.log(doc)
           messages.push(doc.data());
         });
         if (messages.length > 0) {
           setLastMessage(messages[0]);
-
         }
-
-
-        console.log(messages);
       });
   });
 
@@ -59,12 +50,11 @@ const ChatItem = ({ contacts }) => {
 
     dispatch({
       type: "setChattingWith",
-      payload: contacts
+      payload: contacts,
     });
 
     history.push("/chatpage");
   };
-
 
   return (
     <IonItem onClick={openChat} key={contacts.user_id}>

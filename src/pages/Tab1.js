@@ -24,6 +24,8 @@ const Tab1 = () => {
   const { state, dispatch } = useContext(AppContext);
   let contacts = state.user.contacts;
 
+  console.log(contacts);
+
   const changeName = () => {
     dispatch({
       type: "setAppName", //action type
@@ -40,7 +42,11 @@ const Tab1 = () => {
       <IonContent className="chat-screen">
         <IonList>
           {contacts.map((item) => (
-            <ChatItem onClick={doSomething} contacts={item} />
+            <ChatItem
+              key={item.user_id}
+              onClick={doSomething}
+              contacts={item}
+            />
           ))}
         </IonList>
       </IonContent>
