@@ -1,24 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { defineCustomElements } from "@ionic/pwa-elements/loader";
 import App from "./App.js";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import { AppContextProvider } from "./State.js";
 
 const RootComponentWithProvider = () => {
-	return (
-		<AppContextProvider>
-			<App />
-		</AppContextProvider>
-	);
+  return (
+    <AppContextProvider>
+      <App />
+    </AppContextProvider>
+  );
 };
 
 ReactDOM.render(
-	<React.StrictMode>
-		<RootComponentWithProvider />
-	</React.StrictMode>,
-	document.getElementById("root"),
+  <React.StrictMode>
+    <RootComponentWithProvider />
+  </React.StrictMode>,
+  document.getElementById("root")
 );
+defineCustomElements(window);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

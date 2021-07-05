@@ -14,13 +14,13 @@ import {
   IonCol,
   IonIcon,
   useIonViewWillLeave,
-  IonTabButton,
   useIonViewDidEnter,
 } from "@ionic/react";
 
 import db from "../Firestore";
 import { AppContext } from "../State.js";
 import { sendSharp, happyOutline, attachOutline } from "ionicons/icons";
+import { Camera, CameraResultType } from "@capacitor/camera";
 
 import "./Tab1.css";
 
@@ -55,22 +55,31 @@ const ChatPage = ({ user_id }) => {
   });
 
   useIonViewWillLeave(() => {
-    console.log("it should change");
     dispatch({
       type: "setNoTabs",
       payload: false,
     });
   });
 
-  const sendMsg = async () => {
-    if (message) {
+  const getImage = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+    });
+
+    await sendMsg("media", image.base64String);
+  };
+
+  const sendMsg = async (type = "text", file = null) => {
+    if (message || type === "media") {
       let messageBody = {
         message_id: Utility.genRandom(), //Creates a ramdom msg id that will be store in the db
         sent_by: state.user.user_id,
         channel: `${state.user.user_id},${state.chattingWith.user_id}`, //combination of current logged user id and the user being talked to
-        type: "text",
-        message: message,
-        file_url: null,
+        type: type,
+        message: message || "",
+        file_url: file,
         time: +Date.now(),
       };
 
@@ -122,6 +131,7 @@ const ChatPage = ({ user_id }) => {
 
                     <IonCol size="2">
                       <IonIcon
+                        onClick={getImage}
                         className="link-icon"
                         size="large"
                         icon={attachOutline}

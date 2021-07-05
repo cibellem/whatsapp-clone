@@ -21,10 +21,10 @@ const ChatItem = ({ contacts }) => {
   let messageSubscription = useRef(null);
 
   useIonViewDidEnter(async () => {
-    //Messages between two participants
+    //Messages between current user and other uses
     let channel1 = `${state.user.user_id},${contacts.user_id}`;
     let channel2 = `${contacts.user_id},${state.user.user_id}`;
-
+    console.log(channel1);
     //Query from db the messages, store in a variable and set component state
     messageSubscription = await db
       .collection("messages")
